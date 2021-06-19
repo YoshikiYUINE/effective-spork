@@ -1,9 +1,8 @@
 use std::char;
 fn main() {
-
     let mut num: Vec<char> = Vec::new();
     for count in 0..10 {
-        num.push(char::from_digit(count as u32,10).unwrap());
+        num.push(char::from_digit(count as u32, 10).unwrap());
     }
 
     let mut alphabet: Vec<char> = Vec::new();
@@ -34,7 +33,7 @@ fn main() {
     alphabet.push('y');
     alphabet.push('z');
 
-    let mut symbol:Vec<char> = Vec::new();
+    let mut symbol: Vec<char> = Vec::new();
     // period
     symbol.push('.');
     // comma
@@ -68,7 +67,7 @@ fn main() {
     // exclamation point
     symbol.push('!');
 
-let mut num_morse: Vec<String> = Vec::new();
+    let mut num_morse: Vec<String> = Vec::new();
     num_morse.push(String::from("-----"));
     num_morse.push(String::from(".----"));
     num_morse.push(String::from("..---"));
@@ -80,8 +79,56 @@ let mut num_morse: Vec<String> = Vec::new();
     num_morse.push(String::from("---.."));
     num_morse.push(String::from("----."));
 
+    let mut alphabet_morse: Vec<String> = Vec::new();
+    alphabet_morse.push(String::from(".-"));
+    alphabet_morse.push(String::from("-..."));
+    alphabet_morse.push(String::from("-.-."));
+    alphabet_morse.push(String::from("-.."));
+    alphabet_morse.push(String::from("."));
+    alphabet_morse.push(String::from("..-."));
+    alphabet_morse.push(String::from("--."));
+    alphabet_morse.push(String::from("...."));
+    alphabet_morse.push(String::from(".."));
+    alphabet_morse.push(String::from(".---"));
+    alphabet_morse.push(String::from("-.-"));
+    alphabet_morse.push(String::from(".-.."));
+    alphabet_morse.push(String::from("--"));
+    alphabet_morse.push(String::from("-."));
+    alphabet_morse.push(String::from("---"));
+    alphabet_morse.push(String::from(".--."));
+    alphabet_morse.push(String::from("--.-"));
+    alphabet_morse.push(String::from(".-."));
+    alphabet_morse.push(String::from("..."));
+    alphabet_morse.push(String::from("-"));
+    alphabet_morse.push(String::from("..-"));
+    alphabet_morse.push(String::from("...-"));
+    alphabet_morse.push(String::from(".--"));
+    alphabet_morse.push(String::from("-..-"));
+    alphabet_morse.push(String::from("-.--"));
+    alphabet_morse.push(String::from("--.."));
 
-    let search_char: char ='8';
+    let mut symbol_morse: Vec<String> = Vec::new();
+    // period
+    symbol_morse.push(String::from(".-.-.-"));
+    // comma
+    symbol_morse.push(String::from("--..--"));
+    // colon
+    symbol_morse.push(String::from("---..."));
+    // semicolon
+    // question mark
+    // apostrophe '
+    // hyphen
+    // slash
+    // double dush
+    // plus sign
+    // quotation mark "
+    // at sign
+    // doller sign
+    // underscore
+    // ampersand
+    // exclamation point
+
+    let search_char: char = '8';
     let num_index: i32 = get_index(&num, search_char);
 
     let index: usize = check_index(num_index);
