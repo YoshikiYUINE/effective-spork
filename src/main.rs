@@ -115,18 +115,31 @@ fn main() {
     // colon
     symbol_morse.push(String::from("---..."));
     // semicolon
+    symbol_morse.push(String::from("-.-.-."));
     // question mark
+    symbol_morse.push(String::from("..--.."));
     // apostrophe '
+    symbol_morse.push(String::from(".----."));
     // hyphen
+    symbol_morse.push(String::from("-....-"));
     // slash
+    symbol_morse.push(String::from("-..-."));
     // double dush
+    symbol_morse.push(String::from("-...-"));
     // plus sign
+    symbol_morse.push(String::from(".-.-."));
     // quotation mark "
+    symbol_morse.push(String::from(".-..-."));
     // at sign
+    symbol_morse.push(String::from(".--.-."));
     // doller sign
+    symbol_morse.push(String::from("...-..-"));
     // underscore
+    symbol_morse.push(String::from("..--.-"));
     // ampersand
+    symbol_morse.push(String::from(".-..."));
     // exclamation point
+    symbol_morse.push(String::from("-.-.--"));
 
     let search_char: char = '8';
     let num_index: i32 = get_index(&num, search_char);
