@@ -1,11 +1,13 @@
 use std::char;
+use std::cmp::Ordering;
+
 fn main() {
     let mut num: Vec<char> = Vec::new();
     for count in 0..10 {
         num.push(char::from_digit(count as u32, 10).unwrap());
     }
 
-    let mut alphabet: Vec<char> = Vec::new();
+    let mut alphabet: Vec<char> = Vec::with_capacity(26);
     alphabet.push('a');
     alphabet.push('b');
     alphabet.push('c');
@@ -33,7 +35,7 @@ fn main() {
     alphabet.push('y');
     alphabet.push('z');
 
-    let mut symbol: Vec<char> = Vec::new();
+    let mut symbol: Vec<char> = Vec::with_capacity(16);
     // period
     symbol.push('.');
     // comma
@@ -79,7 +81,7 @@ fn main() {
     num_morse.push(String::from("---.."));
     num_morse.push(String::from("----."));
 
-    let mut alphabet_morse: Vec<String> = Vec::new();
+    let mut alphabet_morse: Vec<String> = Vec::with_capacity(26);
     alphabet_morse.push(String::from(".-"));
     alphabet_morse.push(String::from("-..."));
     alphabet_morse.push(String::from("-.-."));
@@ -107,7 +109,7 @@ fn main() {
     alphabet_morse.push(String::from("-.--"));
     alphabet_morse.push(String::from("--.."));
 
-    let mut symbol_morse: Vec<String> = Vec::new();
+    let mut symbol_morse: Vec<String> = Vec::with_capacity(16);
     // period
     symbol_morse.push(String::from(".-.-.-"));
     // comma
@@ -141,31 +143,98 @@ fn main() {
     // exclamation point
     symbol_morse.push(String::from("-.-.--"));
 
-    let search_char: char = '8';
-    let num_index: i32 = get_index(&num, search_char);
+    let search_char: char = '　';
+    let char_vec: Option<Vec<char>> = select_char_vec(&search_char, num, alphabet, symbol);
+    println!("char_vec is {:?}", char_vec);
+    let index: Option<usize> = get_index(&char_vec, search_char);
+    let morse_vec: Option<Vec<String>> =
+        select_morse_vec(char_vec, num_morse, alphabet_morse, symbol_morse);
 
-    let index: usize = check_index(num_index);
+    let val: String = get_val(&search_char, index, morse_vec);
 
-    // let val: i32 = num[index];
-    let val: String = num_morse[index].to_string();
-
-    println!("num_index is {}", num_index);
     println!("val is {}", val);
-    println!("len is {}", num.len());
+    // let val: String = get_val(search_char,char_vec,index);
+
+    // let val: String = num_morse[index].to_string();
+    // let val: String = symbol_morse[index].to_string();
+
+    // println!("num_index is {}", num_index);
+    // println!("val is {}", val);
+    // println!("len is {}", num.len());
 }
 
-fn get_index(num: &Vec<char>, search_char: char) -> i32 {
-    let index: Option<usize> = num.iter().position(|&x| x == search_char);
-    println!("index is {:?}", index);
-    match index {
-        None => -1,
-        Some(i) => i as i32,
+fn select_char_vec(
+    search_char: &char,
+    num: Vec<char>,
+    alphabet: Vec<char>,
+    symbol: Vec<char>,
+) -> Option<Vec<char>> {
+    match &search_char.is_ascii_digit() {
+        true => Some(num),
+        false => match &search_char.is_ascii_alphabetic() {
+            true => Some(alphabet),
+            false => match symbol.contains(&search_char) {
+                true => Some(symbol),
+                false => None,
+            },
+        },
     }
 }
 
-fn check_index(index_value: i32) -> usize {
-    match index_value {
-        -1 => panic!("index error"),
-        _ => index_value as usize,
+fn get_index(char_vec: &Option<Vec<char>>, search_char: char) -> Option<usize> {
+    match char_vec {
+        None => None,
+        Some(i) => {
+            let charactor = String::from(search_char).to_lowercase();
+            let index: Option<usize> = i
+                .iter()
+                .position(|&x| x == charactor.chars().nth(0).unwrap());
+            println!("index is {:?}", index);
+            index
+        }
     }
 }
+
+fn select_morse_vec(
+    char_vec: Option<Vec<char>>,
+    num_morse: Vec<String>,
+    alphabet_morse: Vec<String>,
+    symbol_morse: Vec<String>,
+) -> Option<Vec<String>> {
+    match char_vec {
+        None => None,
+        Some(i) => {
+            let len = i.len();
+            match len.cmp(&num_morse.len()) {
+                Ordering::Equal => Some(num_morse),
+                _ => match len.cmp(&alphabet_morse.len()) {
+                    Ordering::Equal => Some(alphabet_morse),
+                    _ => match len.cmp(&symbol_morse.len()) {
+                        Ordering::Equal => Some(symbol_morse),
+                        _ => None,
+                    },
+                },
+            }
+        }
+    }
+}
+
+fn get_val(search_char: &char, index: Option<usize>, morse_vec: Option<Vec<String>>) -> String {
+    match search_char.is_whitespace() {
+        true => String::from("   "),
+        false => match index {
+            None => panic!("index is None"),
+            Some(i) => match morse_vec {
+                None => panic!("morse_vec is None"),
+                Some(j) => j[i].to_string(),
+            },
+        },
+    }
+}
+
+// fn check_index(index_value: i32) -> usize {
+//     match index_value {
+//         -1 => panic!("out of index"),
+//         _ => index_value as usize,
+//     }
+// }
