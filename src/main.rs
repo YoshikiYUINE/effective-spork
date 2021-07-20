@@ -153,14 +153,6 @@ fn main() {
     let val: String = get_val(&search_char, index, morse_vec);
 
     println!("val is {}", val);
-    // let val: String = get_val(search_char,char_vec,index);
-
-    // let val: String = num_morse[index].to_string();
-    // let val: String = symbol_morse[index].to_string();
-
-    // println!("num_index is {}", num_index);
-    // println!("val is {}", val);
-    // println!("len is {}", num.len());
 }
 
 fn select_char_vec(
@@ -231,10 +223,3 @@ fn get_val(search_char: &char, index: Option<usize>, morse_vec: Option<Vec<Strin
         },
     }
 }
-
-// fn check_index(index_value: i32) -> usize {
-//     match index_value {
-//         -1 => panic!("out of index"),
-//         _ => index_value as usize,
-//     }
-// }
