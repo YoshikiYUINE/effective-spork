@@ -1,5 +1,7 @@
+//! charactor to morse code.
+
 use std::char;
-use std::cmp::Ordering;
+use std::collections::HashMap;
 
 fn main() {
     let mut num: Vec<char> = Vec::new();
@@ -143,83 +145,48 @@ fn main() {
     // exclamation point
     symbol_morse.push(String::from("-.-.--"));
 
-    let search_char: char = '　';
-    let char_vec: Option<Vec<char>> = select_char_vec(&search_char, num, alphabet, symbol);
-    println!("char_vec is {:?}", char_vec);
-    let index: Option<usize> = get_index(&char_vec, search_char);
-    let morse_vec: Option<Vec<String>> =
-        select_morse_vec(char_vec, num_morse, alphabet_morse, symbol_morse);
+    // create hashmap from vector of num
+    let numbers: HashMap<_, _> = num.iter().zip(num_morse.iter()).collect();
+    // create hashmap from vector of alphabet
+    let alphabets: HashMap<_, _> = alphabet.iter().zip(alphabet_morse.iter()).collect();
+    // create hashmap from vector of symbol
+    let symbols: HashMap<_, _> = symbol.iter().zip(symbol_morse.iter()).collect();
 
-    let val: String = get_val(&search_char, index, morse_vec);
-
-    println!("val is {}", val);
-}
-
-fn select_char_vec(
-    search_char: &char,
-    num: Vec<char>,
-    alphabet: Vec<char>,
-    symbol: Vec<char>,
-) -> Option<Vec<char>> {
-    match &search_char.is_ascii_digit() {
-        true => Some(num),
-        false => match &search_char.is_ascii_alphabetic() {
-            true => Some(alphabet),
-            false => match symbol.contains(&search_char) {
-                true => Some(symbol),
-                false => None,
-            },
-        },
+    let search_word: String = String::from("hello");
+    for c in search_word.chars() {
+        let search_char = c;
+        let morse_val: String = get_morse(search_char, &numbers, &alphabets, &symbols);
+        println!("{} of morse code is {}", search_char, morse_val);
     }
+    
 }
 
-fn get_index(char_vec: &Option<Vec<char>>, search_char: char) -> Option<usize> {
-    match char_vec {
-        None => None,
-        Some(i) => {
-            let charactor = String::from(search_char).to_lowercase();
-            let index: Option<usize> = i
-                .iter()
-                .position(|&x| x == charactor.chars().nth(0).unwrap());
-            println!("index is {:?}", index);
-            index
-        }
-    }
-}
-
-fn select_morse_vec(
-    char_vec: Option<Vec<char>>,
-    num_morse: Vec<String>,
-    alphabet_morse: Vec<String>,
-    symbol_morse: Vec<String>,
-) -> Option<Vec<String>> {
-    match char_vec {
-        None => None,
-        Some(i) => {
-            let len = i.len();
-            match len.cmp(&num_morse.len()) {
-                Ordering::Equal => Some(num_morse),
-                _ => match len.cmp(&alphabet_morse.len()) {
-                    Ordering::Equal => Some(alphabet_morse),
-                    _ => match len.cmp(&symbol_morse.len()) {
-                        Ordering::Equal => Some(symbol_morse),
-                        _ => None,
-                    },
-                },
-            }
-        }
-    }
-}
-
-fn get_val(search_char: &char, index: Option<usize>, morse_vec: Option<Vec<String>>) -> String {
+fn get_morse(
+    search_char: char,
+    numbers: &HashMap<&char, &String>,
+    alphabets: &HashMap<&char, &String>,
+    symbols: &HashMap<&char, &String>,
+) -> String {
     match search_char.is_whitespace() {
         true => String::from("   "),
-        false => match index {
-            None => panic!("index is None"),
-            Some(i) => match morse_vec {
-                None => panic!("morse_vec is None"),
-                Some(j) => j[i].to_string(),
-            },
-        },
+        false => {
+            let morse = numbers.get(&search_char);
+            match morse {
+                Some(v) => v.to_string(),
+                None => {
+                    let morse = alphabets.get(&search_char.to_lowercase().nth(0).unwrap());
+                    match morse {
+                        Some(v) => v.to_string(),
+                        None => {
+                            let morse = symbols.get(&search_char);
+                            match morse {
+                                Some(v) => v.to_string(),
+                                None => panic!("get_morse is failed"),
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
