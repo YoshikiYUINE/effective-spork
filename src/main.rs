@@ -153,14 +153,19 @@ fn main() {
     let symbols: HashMap<_, _> = symbol.iter().zip(symbol_morse.iter()).collect();
 
     let search_word: String = String::from("hello");
+    let mut morse_word_vec: Vec<String> = Vec::new();
     for c in search_word.chars() {
         let search_char = c;
         let morse_val: String = get_morse(search_char, &numbers, &alphabets, &symbols);
+        morse_word_vec.push(String::from(&morse_val));
         println!("{} of morse code is {}", search_char, morse_val);
     }
-    
+    println!("morse word is {:?}",morse_word_vec);
 }
 
+/// return morse code
+/// from search_char to morse code
+/// when search charactor can not change to morse code then error
 fn get_morse(
     search_char: char,
     numbers: &HashMap<&char, &String>,
