@@ -2,6 +2,7 @@
 
 use std::char;
 use std::collections::HashMap;
+use std::io;
 
 fn main() {
     let mut num: Vec<char> = Vec::new();
@@ -152,7 +153,11 @@ fn main() {
     // create hashmap from vector of symbol
     let symbols: HashMap<_, _> = symbol.iter().zip(symbol_morse.iter()).collect();
 
-    let search_word: String = String::from("hello");
+    // let search_word: String = String::from("hello");
+    println!("please enter search word.");
+    let mut search_word: String = String::new();
+    io::stdin().read_line(&mut search_word)
+    .expect("Failed to read line");
     let mut morse_word_vec: Vec<String> = Vec::new();
     for c in search_word.chars() {
         let search_char = c;
@@ -160,7 +165,7 @@ fn main() {
         morse_word_vec.push(String::from(&morse_val));
         println!("{} of morse code is {}", search_char, morse_val);
     }
-    println!("morse word is {:?}",morse_word_vec);
+    println!("morse word is {:?}", morse_word_vec);
 }
 
 /// return morse code
