@@ -153,7 +153,6 @@ fn main() {
     // create hashmap from vector of symbol
     let symbols: HashMap<_, _> = symbol.iter().zip(symbol_morse.iter()).collect();
 
-    // let search_word: String = String::from("hello");
     println!("please enter search word.");
     let mut search_word: String = String::new();
     io::stdin().read_line(&mut search_word)
