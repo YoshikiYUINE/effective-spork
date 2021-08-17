@@ -155,8 +155,9 @@ fn main() {
 
     println!("please enter search word.");
     let mut search_word: String = String::new();
-    io::stdin().read_line(&mut search_word)
-    .expect("Failed to read line");
+    io::stdin()
+        .read_line(&mut search_word)
+        .expect("Failed to read line");
     let mut morse_word_vec: Vec<String> = Vec::new();
     for c in search_word.chars() {
         let search_char = c;
