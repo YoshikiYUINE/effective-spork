@@ -1,3 +1,3 @@
 # effective-spork
 
-morse code
+charactor to morse code.
